@@ -18,7 +18,7 @@ class AgreementsController extends Controller
 
     public function convenios(){
 
-        $results = DB::select('SELECT a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c_t.task, t.name as "task_name", s.id as subtask, s.name as "subtask_name" FROM `agreements` a
+        $results = DB::select('SELECT a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c_t.task, t.name as "task_name", s.id as subtask, s.name as "subtask_name", c.dates FROM `agreements` a
             inner join agreements_config c on c.agreement = a.id
             inner join configs con on con.id = c.config
             inner join agreements_types a_t on a_t.id = con.agreement_type
@@ -34,7 +34,7 @@ class AgreementsController extends Controller
     }
 
     public function contratos(){
-        $results = DB::select('SELECT a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c_t.task, t.name as "task_name", s.id as subtask, s.name as "subtask_name" FROM `agreements` a
+        $results = DB::select('SELECT a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c_t.task, t.name as "task_name", s.id as subtask, s.name as "subtask_name", c.dates FROM `agreements` a
             inner join agreements_config c on c.agreement = a.id
             inner join configs con on con.id = c.config
             inner join agreements_types a_t on a_t.id = con.agreement_type
@@ -47,5 +47,9 @@ class AgreementsController extends Controller
         $data = ['INFO' => $results];
 
         return view('convenios', $data);
+    }
+
+    public function check(Request $request){
+        
     }
 }

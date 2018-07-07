@@ -30,4 +30,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'AdminMiddle']], fun
 Route::group(['prefix' => 'agreements', 'middleware' => ['auth', 'AdminMiddle']], function () {
     Route::get('convenios', 'AgreementsController@convenios');
     Route::get('contratos', 'AgreementsController@contratos');
+
+
+    Route::post('check', 'AgreementsController@check');
 });

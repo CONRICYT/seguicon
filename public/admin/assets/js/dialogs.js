@@ -46,6 +46,7 @@ function showConfirm(Titulo, Texto, Funcion, funcionCancelar) {
         }
         $('#divConfirm').modal('hide');
     });
+
     $("#divConfirm .btn-primary").off("click");
     $("#divConfirm .btn-primary").on('click', function() {
         Funcion();
@@ -95,6 +96,8 @@ function showConfirmB(Titulo, Texto, Funcion, FunctionCancelar, objeto) {
         FunctionCancelar(objeto);
         $('#divConfirm').modal('hide');
     });
+
+    $("#divConfirm .btn-primary").off('click');
     $("#divConfirm .btn-primary").on('click', function() {
         Funcion();
         $('#divConfirm').modal('hide');

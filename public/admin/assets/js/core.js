@@ -105,24 +105,99 @@ $(document).ready(function() {
     });
   }
 
-  $(document).on('change', '.colorinput-input', function(e){
-
-      var self = $(this);
-      label = self.parent();
-
-      var FuncionOk = function (){
-
+  $('input').each(function() {
+      var is_cheeck = $(this).prop("checked");
+      if(is_cheeck) {
+          var label = $(this).parent();
           label.find("span").addClass("bg-green");
-          self.prop('disabled', true);
-      };
 
-      var FunctionCancelar = function (o){
-          self.prop('checked', false);
-      };
-
-      showConfirmB("Tarea", "Vas a finalizar la tarea, ¿Estás de acuerdo?", FuncionOk, FunctionCancelar, [])
-
-      console.log($(this).is(":checked"));
+          $(this).prop("checked", true);
+      }
   });
 
 });
+
+$(document).on('change', '.checkTask', function(e){
+
+    var is_cheeck = $(this).prop("checked");
+    if(!is_cheeck) {
+        $(this).prop("checked", true);
+    } else {
+        var self = $(this);
+
+        var FuncionOk = function (){
+            $('#divConfirm').modal('hide');
+            ajax_post_function(self);
+
+        };
+
+        var FunctionCancelar = function (o){
+            self.prop('checked', false);
+        };
+
+        showConfirmB("Tarea", "Vas a finalizar la tarea, ¿Estás de acuerdo?", FuncionOk, FunctionCancelar, [])
+    }
+});
+
+function checkTaskData(element){
+    var formData = new FormData();
+
+    element.closest('tr').find('input').each(function(){
+        console.log($(this).val());
+    });
+
+    formData.append("username", "Groucho");
+
+    return formData;
+}
+
+function checkTask(o, self){
+
+    label = self.parent();
+    label.find("span").addClass("bg-green");
+    self.prop('disabled', true);
+}
+
+function checkTaskError(o, self){
+
+}
+
+function ajax_post_function(element){
+  showLoader('Espera un momento...');
+
+  var form_data = [];
+
+  var function_data = element.data('function-data');
+  var function_success = element.data('function-success');
+  var function_error = element.data('function-error');
+
+  if (function_data !== undefined) {
+      form_data = window[function_data].apply(null, [element]);
+  }
+
+  $.ajax({
+      'url': element.data('url'),
+      type: 'post',
+      dataType: 'json',
+      data: form_data,
+      processData: false,
+      contentType: false,
+      headers: {
+          'X-CSRF-TOKEN': $('[name="_token"]').val()
+      },
+      success: function (o) {
+          closeLoader();
+          if (o.result == 1 || o.data !== undefined) {
+              if (function_success !== undefined) {
+                  window[function_success].apply(null, [o, element]);
+              }
+          } else {
+              if (function_error !== undefined) {
+                  window[function_error].apply(null, [o, element]);
+              } else {
+                  showAlert("Verify", o.errors);
+              }
+          }
+      }
+  });
+}
