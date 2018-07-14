@@ -115,6 +115,22 @@ $(document).ready(function() {
       }
   });
 
+    updateColors();
+
+    $('.datetimepicker').datetimepicker({useCurrent: false, locale: 'es', showClose:true, format: "DD-MM-YYYY HH:mm"});
+
+    $('.datetimepicker').datetimepicker().on("dp.change", function (e) {
+        console.log(e);
+        $(this).find('.updateDate').html(e.date.format("DD-MM-YYYY HH:mm")+'&nbsp;');
+        ajax_post_function($(this));
+    });
+});
+
+
+$(document).on('change', '.onlyView', function(e){
+    e.preventDefault();
+    var is_cheeck = $(this).prop("checked");
+    $(this).prop("checked", !is_cheeck);
 });
 
 $(document).on('change', '.checkTask', function(e){
@@ -128,7 +144,6 @@ $(document).on('change', '.checkTask', function(e){
         var FuncionOk = function (){
             $('#divConfirm').modal('hide');
             ajax_post_function(self);
-
         };
 
         var FunctionCancelar = function (o){
@@ -139,14 +154,76 @@ $(document).on('change', '.checkTask', function(e){
     }
 });
 
+function updateColors(){
+    console.log("onUpdate");
+    $('.card_task').each(function() {
+        var all_complete = true;
+        var total_subtask = 0;
+        var pending_subtask = 0;
+        $(this).find('.colorinput-color').each(function(){
+            if(!$(this).hasClass('bg-green')) {
+                all_complete = false;
+                pending_subtask++;
+            }
+            total_subtask++;
+        });
+
+
+        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-blue');
+        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-danger');
+        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-warning');
+        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-green');
+        
+        if(all_complete) {
+            var idTask = $(this).data('task');
+            var idAgreement = $(this).data('agreement');
+            $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-green');
+        } else {
+
+            var idTask = $(this).data('task');
+            var idAgreement = $(this).data('agreement');
+
+            var moment = require('moment');
+
+            var startDate = $(this).find('.startDate').html();
+            startDate = startDate.substring(0, (startDate.length - 6))+ ':00';
+            startDate = moment(startDate, "DD-MM-YYYY HH:mm:ss");
+            var startDateTxt = startDate.format('YYYY-MM-DD HH:mm:ss');
+
+            var endDate = $(this).find('.endDate').html();
+            endDate = endDate.substring(0, (endDate.length - 6)) + ':00';
+            endDate = moment(endDate, "DD-MM-YYYY HH:mm:ss");
+            var endDateTxt = endDate.format('YYYY-MM-DD HH:mm:ss');
+
+            var currentDate = moment();
+            var currentDateTxt = currentDate.format('YYYY-MM-DD HH:mm:ss');
+
+            if(currentDate.isBefore(endDate)) {
+                var minutosTotales = endDate.diff(startDate, 'minutes');
+                var min30 = minutosTotales * .30;
+                var alertDate = endDate.subtract(min30, 'minutes');
+
+                if(currentDate.isAfter(alertDate)) {
+
+                    $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-warning');
+                } else {
+                    $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-blue');
+                }
+            } else {
+                $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-danger');
+            }
+        }
+    });
+}
+
 function checkTaskData(element){
     var formData = new FormData();
 
-    element.closest('tr').find('input').each(function(){
-        console.log($(this).val());
-    });
+    formData.append("subtask", element.val());
 
-    formData.append("username", "Groucho");
+    formData.append("agreement", element.data('agreement'));
+
+    formData.append("_token", $("input[name='_token']").val());
 
     return formData;
 }
@@ -156,11 +233,43 @@ function checkTask(o, self){
     label = self.parent();
     label.find("span").addClass("bg-green");
     self.prop('disabled', true);
+    updateColors();
 }
 
 function checkTaskError(o, self){
-
+    self.prop('checked', false);
+    showAlert("Información", o.errors);
 }
+
+
+function updateTaskData(element){
+    var formData = new FormData();
+    formData.append("task", element.closest('.card_task').data('task'));
+    formData.append("agreement", element.closest('.card_task').data('agreement'));
+
+    var startDate = element.closest('.card_task').find('.startDate').html();
+    startDate = startDate.substring(0, (startDate.length - 6));
+
+    var endDate = element.closest('.card_task').find('.endDate').html();
+    endDate = endDate.substring(0, (endDate.length - 6));
+
+    formData.append("startDate", startDate+':00');
+
+    formData.append("endDate", endDate+':00');
+    formData.append("_token", $("input[name='_token']").val());
+
+    return formData;
+}
+
+function updateTask(o, self){
+    updateColors();
+}
+
+function updateTaskError(o, self){
+    showAlert("Información", o.errors);
+}
+
+
 
 function ajax_post_function(element){
   showLoader('Espera un momento...');

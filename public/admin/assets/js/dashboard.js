@@ -1,12 +1,15 @@
 require.config({
 shim: {
 'bootstrap': ['jquery'],
+'moment': ['jquery'],
+'moment_locales': ['jquery', 'moment'],
+'datetimepicker': ['jquery', 'moment', 'moment_locales'],
 'sparkline': ['jquery'],
 'tablesorter': ['jquery'],
 'vector-map': ['jquery'],
 'vector-map-de': ['vector-map', 'jquery'],
 'vector-map-world': ['vector-map', 'jquery'],
-'core': ['bootstrap', 'jquery'],
+'core': ['bootstrap', 'jquery', 'moment', 'datetimepicker'],
 },
 paths: {
 'core': 'assets/js/core',
@@ -19,6 +22,9 @@ paths: {
 'vector-map-de': 'assets/js/vendors/jquery-jvectormap-de-merc',
 'vector-map-world': 'assets/js/vendors/jquery-jvectormap-world-mill',
 'circle-progress': 'assets/js/vendors/circle-progress.min',
+'moment': 'assets/js/vendors/moment.min',
+'moment_locales': 'assets/js/vendors/moment-with-locales',
+'datetimepicker': 'assets/js/vendors/bootstrap-datetimepicker.min',
 }
 });
 window.tabler = {
@@ -123,4 +129,5 @@ colors: {
 'gray-dark-lightest': '#ebebec'
 }
 };
+
 require(['core']);

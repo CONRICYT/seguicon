@@ -23,14 +23,18 @@ Route::group(['prefix' => '', 'middleware' => ['auth', 'AdminMiddle']], function
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'AdminMiddle']], function () {
-    Route::get('convenios', 'AdministrationController@convenios');
-    Route::get('contratos', 'AdministrationController@contratos');
+    Route::get('convenios', 'AgreementsController@admin_convenios');
+    Route::get('contratos', 'AgreementsController@admin_contratos');
 });
 
 Route::group(['prefix' => 'agreements', 'middleware' => ['auth', 'AdminMiddle']], function () {
     Route::get('convenios', 'AgreementsController@convenios');
     Route::get('contratos', 'AgreementsController@contratos');
-
-
     Route::post('check', 'AgreementsController@check');
+    Route::post('updateDate', 'AgreementsController@updateDate');
+});
+
+Route::group(['prefix' => 'views', 'middleware' => ['auth', 'AdminMiddle']], function () {
+    Route::get('convenios', 'AgreementsController@view_convenios');
+    Route::get('contratos', 'AgreementsController@view_contratos');
 });
