@@ -142,7 +142,6 @@ $(document).on('change', '.checkTask', function(e){
         var self = $(this);
 
         var FuncionOk = function (){
-            $('#divConfirm').modal('hide');
             ajax_post_function(self);
         };
 
