@@ -31,7 +31,7 @@ class AgreementsController extends Controller
             where a_t.id = :agreement_type
             order by a.name, t.id ', ['agreement_type' => 1]);
 
-        $data = ['title' => 'Convenios', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
+        $data = ['title' => 'Convenios', 'TIPO' => 'Convenios Modificatorios', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
 
         return view('convenios', $data);
     }
@@ -41,10 +41,10 @@ class AgreementsController extends Controller
     }
 
     public function admin_convenios(){
-        return $this->convenios(true, true);
+        return $this->convenios(false, true);
     }
 
-    public function contratos($only_view = false){
+    public function contratos($only_view = false, $is_admin=false){
         $results = DB::select('SELECT a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c_t.task, t.name as "task_name", s.id as subtask, s.name as "subtask_name", c.dates FROM `agreements` a
             inner join agreements_config c on c.agreement = a.id
             inner join configs con on con.id = c.config
@@ -55,7 +55,7 @@ class AgreementsController extends Controller
             where a_t.id = :agreement_type
             order by a.name, t.id', ['agreement_type' => 2]);
 
-        $data = ['title' => 'Convenios', 'INFO' => $results, 'ONLY_VIEW' => $only_view];
+        $data = ['title' => 'Contratos', 'TIPO' => 'Contratos', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
 
         return view('convenios', $data);
     }
@@ -65,7 +65,7 @@ class AgreementsController extends Controller
     }
 
     public function admin_contratos(){
-        return $this->contratos(true, true);
+        return $this->contratos(false, true);
     }
 
     public function check(Request $request){
@@ -75,7 +75,6 @@ class AgreementsController extends Controller
         if(count($res)>0){
             $current_agreement_config = $res[0];
             $data = $current_agreement_config->data;
-
             if($data != ''){
                 $data =  json_decode($data);
                 $entro = false;
@@ -95,7 +94,7 @@ class AgreementsController extends Controller
             $data = json_encode($data);
             $current_agreement_config->data = $data;
             $current_agreement_config->save();
-            return json_encode(array('result' => 1));
+            return json_encode(array('result' => 1, 'complete_date' => date('d-m-Y')));
 
         } else {
             return json_encode(array('result' => 0, 'errors' => 'No se logro guardar la información'));

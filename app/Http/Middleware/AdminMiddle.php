@@ -27,12 +27,12 @@ class AdminMiddle {
 
            $agreements = $menu->add('Gestión', 'agreements');
 
-           $agreements->add('Convenios', 'agreements/convenios');
-           $agreements->add('Contratos', 'agreements/contratos');
-
-           $views = $menu->add('Views', 'views');
+           $views = $menu->add('Vista', 'views');
            $views->add('Convenios', 'views/convenios');
            $views->add('Contratos', 'views/contratos');
+           
+           $agreements->add('Convenios', 'agreements/convenios');
+           $agreements->add('Contratos', 'agreements/contratos');
 
            $admin = $menu->add('Admin', 'admin');
            $admin->add('Convenios', 'admin/convenios');

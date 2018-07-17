@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">Seguicon - Seguimineto de Contratos y Convenios Modificatorios</h3>
+    <h3 class="card-title">Seguicon - Seguimineto de {{ $TIPO }}</h3>
   </div>
   <div class="card-body">
         @csrf
@@ -11,6 +11,7 @@
         <?php
             $current_agreement = '';
             $current_task = '';
+            $idx = 0;
             foreach ($INFO as $key => $value){
                 $dates = $value->dates;
                 $dates = json_decode($dates);
@@ -42,6 +43,7 @@
                 }
 
                 if($current_agreement != $value->agreement && $current_agreement != '') {
+                    $idx = 0;
                     echo '</td>
                         </tr>
                     </table>
@@ -49,17 +51,16 @@
                 </td>
             </tr>
             <tr>
-                <td class="text-center">
-                <h1><a class="badge badge-success" data-toggle="collapse" href="#collapseExample'.$value->agreement.'" role="button" aria-expanded="false" aria-controls="collapseExample">'.$value->agreement_name.'</a></h1>
+                <td>
+                <h1><a class="" data-toggle="collapse" href="#collapseExample'.$value->agreement.'" role="button" aria-expanded="false" aria-controls="collapseExample">'.$value->agreement_name.'</a></h1>
                     <div class="collapse" id="collapseExample'.$value->agreement.'">
-                        <table class="table"><tr>';
+                        <table class="table"><tr class="row">';
                 }else if($current_agreement != $value->agreement) {
                     echo '<tr>
-                    <td class="text-center">
-                    <h1><a class="badge badge-success" data-toggle="collapse" href="#collapseExample'.$value->agreement.'" role="button" aria-expanded="false" aria-controls="collapseExample">'.$value->agreement_name.'</a></h1>
+                    <td>
+                    <h1><a class="" data-toggle="collapse" href="#collapseExample'.$value->agreement.'" role="button" aria-expanded="false" aria-controls="collapseExample">'.$value->agreement_name.'</a></h1>
                         <div class="collapse" id="collapseExample'.$value->agreement.'">
-                            <table class="table">
-                                <tr>';
+                            <table class="table"><tr class="row">';
                 }
 
                 if($current_task != $value->task_name && $current_task != '') {
@@ -68,30 +69,31 @@
                     </div>';
                 }
                 if($current_task != $value->task_name) {
+                    $idx++;
                 ?>
-                    <td>
+                    <td class="col-md-4">
                         <div class="progress progress-xs">
                             <div class="progress-bar colorBar{{ $value->agreement }}_{{ $value->task }}" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <div class="card card_task" data-task="{{ $value->task }}" data-agreement="{{ $value->agreement }}">
+                        <div class="card card_task <?= isset($ONLY_VIEW) && $ONLY_VIEW ? 'card-collapsed' : '' ?>" data-task="{{ $value->task }}" data-agreement="{{ $value->agreement }}">
                             <div class="card-header">
-                                <h3 class="card-title">{{ $value->task_name }}</h3>
+                                <h3 class="card-title"> {{ $idx }}.- {{ $value->task_name }}</h3>
                                 <div class="card-options">
                                     <div class=""><small>
                                         <div class="form-group">
-                                            <div class="input-group date datetimepicker" data-url="{{ action('AgreementsController@updateDate') }}" data-function-data="updateTaskData" data-function-success="updateTask" data-function-error="updateTaskError">
+                                            <div class="input-group date <?= isset($IS_ADMIN) && $IS_ADMIN ? 'datetimepicker' : '' ?>" data-url="{{ action('AgreementsController@updateDate') }}" data-function-data="updateTaskData" data-function-success="updateTask" data-function-error="updateTaskError">
                                                 <label class="updateDate startDate">{{ $start_date }}&nbsp;</label>
                                                 <input type="hidden" class="form-control" value="{{ $start_date }}"/>
                                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                             </div>
-                                            <div class="input-group date datetimepicker" data-url="{{ action('AgreementsController@updateDate') }}" data-function-data="updateTaskData" data-function-success="updateTask" data-function-error="updateTaskError">
+                                            <div class="input-group date <?= isset($IS_ADMIN) && $IS_ADMIN ? 'datetimepicker' : '' ?>" data-url="{{ action('AgreementsController@updateDate') }}" data-function-data="updateTaskData" data-function-success="updateTask" data-function-error="updateTaskError">
                                                 <label class="updateDate endDate">{{ $end_date }}&nbsp;</label>
                                                 <input type="hidden" class="form-control" value="{{ $end_date }}"/>
                                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
                                     </small></div>
-                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                    <?= isset($ONLY_VIEW) && $ONLY_VIEW ? '' : '<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>' ?>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -139,8 +141,7 @@
                                           }
                                         ?>
                                     </label>
-                                </div
-                                >
+                                </div>
                             </div>
                         <?php
                     }

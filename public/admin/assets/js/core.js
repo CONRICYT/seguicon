@@ -173,7 +173,7 @@ function updateColors(){
         $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-danger');
         $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-warning');
         $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-green');
-        
+
         if(all_complete) {
             var idTask = $(this).data('task');
             var idAgreement = $(this).data('agreement');
@@ -232,6 +232,9 @@ function checkTask(o, self){
 
     label = self.parent();
     label.find("span").addClass("bg-green");
+    label.find("span").attr('data-original-title', "Completada el " + o.complete_date);
+    label.find("span").tooltip();
+
     self.prop('disabled', true);
     updateColors();
 }

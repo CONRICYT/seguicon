@@ -38,3 +38,7 @@ Route::group(['prefix' => 'views', 'middleware' => ['auth', 'AdminMiddle']], fun
     Route::get('convenios', 'AgreementsController@view_convenios');
     Route::get('contratos', 'AgreementsController@view_contratos');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
