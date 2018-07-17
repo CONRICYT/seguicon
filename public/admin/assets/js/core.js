@@ -115,12 +115,11 @@ $(document).ready(function() {
       }
   });
 
-    updateColors();
+    updateColors(null);
 
     $('.datetimepicker').datetimepicker({useCurrent: false, locale: 'es', showClose:true, format: "DD-MM-YYYY HH:mm"});
 
     $('.datetimepicker').datetimepicker().on("dp.change", function (e) {
-        console.log(e);
         $(this).find('.updateDate').html(e.date.format("DD-MM-YYYY HH:mm")+'&nbsp;');
         ajax_post_function($(this));
     });
@@ -153,66 +152,71 @@ $(document).on('change', '.checkTask', function(e){
     }
 });
 
-function updateColors(){
-    console.log("onUpdate");
-    $('.card_task').each(function() {
-        var all_complete = true;
-        var total_subtask = 0;
-        var pending_subtask = 0;
-        $(this).find('.colorinput-color').each(function(){
-            if(!$(this).hasClass('bg-green')) {
-                all_complete = false;
-                pending_subtask++;
-            }
-            total_subtask++;
-        });
-
-
-        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-blue');
-        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-danger');
-        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-warning');
-        $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-green');
-
-        if(all_complete) {
-            var idTask = $(this).data('task');
-            var idAgreement = $(this).data('agreement');
-            $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-green');
-        } else {
-
-            var idTask = $(this).data('task');
-            var idAgreement = $(this).data('agreement');
-
-            var moment = require('moment');
-
-            var startDate = $(this).find('.startDate').html();
-            startDate = startDate.substring(0, (startDate.length - 6))+ ':00';
-            startDate = moment(startDate, "DD-MM-YYYY HH:mm:ss");
-            var startDateTxt = startDate.format('YYYY-MM-DD HH:mm:ss');
-
-            var endDate = $(this).find('.endDate').html();
-            endDate = endDate.substring(0, (endDate.length - 6)) + ':00';
-            endDate = moment(endDate, "DD-MM-YYYY HH:mm:ss");
-            var endDateTxt = endDate.format('YYYY-MM-DD HH:mm:ss');
-
-            var currentDate = moment();
-            var currentDateTxt = currentDate.format('YYYY-MM-DD HH:mm:ss');
-
-            if(currentDate.isBefore(endDate)) {
-                var minutosTotales = endDate.diff(startDate, 'minutes');
-                var min30 = minutosTotales * .30;
-                var alertDate = endDate.subtract(min30, 'minutes');
-
-                if(currentDate.isAfter(alertDate)) {
-
-                    $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-warning');
-                } else {
-                    $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-blue');
-                }
-            } else {
-                $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-danger');
-            }
+function onUpdateColors(self){
+    var all_complete = true;
+    var total_subtask = 0;
+    var pending_subtask = 0;
+    self.find('.colorinput-color').each(function(){
+        if(!$(this).hasClass('bg-green')) {
+            all_complete = false;
+            pending_subtask++;
         }
+        total_subtask++;
     });
+
+    var idTask = self.data('task');
+    var idAgreement = self.data('agreement');
+
+    $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-blue');
+    $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-danger');
+    $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-warning');
+    $('.colorBar'+idAgreement+'_'+idTask).removeClass('bg-green');
+
+    if(all_complete) {
+        $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-green');
+    } else {
+
+        var moment = require('moment');
+
+        var startDate = self.find('.startDate').html();
+        startDate = startDate.substring(0, (startDate.length - 6))+ ':00';
+        startDate = moment(startDate, "DD-MM-YYYY HH:mm:ss");
+        var startDateTxt = startDate.format('YYYY-MM-DD HH:mm:ss');
+
+        var endDate = self.find('.endDate').html();
+        endDate = endDate.substring(0, (endDate.length - 6)) + ':00';
+        endDate = moment(endDate, "DD-MM-YYYY HH:mm:ss");
+        var endDateTxt = endDate.format('YYYY-MM-DD HH:mm:ss');
+
+        var currentDate = moment();
+        var currentDateTxt = currentDate.format('YYYY-MM-DD HH:mm:ss');
+
+        if(currentDate.isBefore(endDate)) {
+            var minutosTotales = endDate.diff(startDate, 'minutes');
+            var min30 = minutosTotales * .30;
+            var alertDate = endDate.subtract(min30, 'minutes');
+
+            if(currentDate.isAfter(alertDate)) {
+                $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-warning');
+            } else {
+                $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-blue');
+            }
+        } else {
+            $('.colorBar'+idAgreement+'_'+idTask).addClass('bg-danger');
+        }
+    }
+}
+function updateColors(selfParent){
+
+    if(selfParent != null){
+        selfParent.closest('.card_task').each(function() {
+            onUpdateColors($(this));
+        });
+    } else {
+        $('.card_task').each(function() {
+            onUpdateColors($(this));
+        });
+    }
 }
 
 function checkTaskData(element){
@@ -235,7 +239,7 @@ function checkTask(o, self){
     label.find("span").tooltip();
 
     self.prop('disabled', true);
-    updateColors();
+    updateColors(self);
 }
 
 function checkTaskError(o, self){
@@ -264,7 +268,7 @@ function updateTaskData(element){
 }
 
 function updateTask(o, self){
-    updateColors();
+    updateColors(self);
 }
 
 function updateTaskError(o, self){
@@ -274,7 +278,7 @@ function updateTaskError(o, self){
 
 
 function ajax_post_function(element){
-  showLoader('Espera un momento...');
+  //showLoader('Espera un momento...');
 
   var form_data = [];
 
@@ -297,7 +301,7 @@ function ajax_post_function(element){
           'X-CSRF-TOKEN': $('[name="_token"]').val()
       },
       success: function (o) {
-          closeLoader();
+          //closeLoader();
           if (o.result == 1 || o.data !== undefined) {
               if (function_success !== undefined) {
                   window[function_success].apply(null, [o, element]);
