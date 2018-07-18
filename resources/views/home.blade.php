@@ -9,22 +9,22 @@
       <div class="card p-3">
           <div class="d-flex align-items-center">
               <span class="stamp stamp-md bg-green mr-3">
-                  <i class="fe fe-shopping-cart"></i>
+                  <i class="fa fa-file-text-o"></i>
               </span>
               <div>
-                  <h4 class="m-0"><a href="javascript:void(0)">22 <small>Contratos</small></a></h4>
-                  <small class="text-muted">1 completado</small>
+                  <h4 class="m-0"><a href="javascript:void(0)">{{ $CONTRATOS }} <small>Contratos</small></a></h4>
+                  <!--small class="text-muted"> completado</small-->
               </div>
           </div>
       </div>
       <div class="card p-3">
           <div class="d-flex align-items-center">
               <span class="stamp stamp-md bg-green mr-3">
-                  <i class="fe fe-shopping-cart"></i>
+                  <i class="fa fa-file-text"></i>
               </span>
               <div>
-                  <h4 class="m-0"><a href="javascript:void(0)">22 <small>Convenios</small></a></h4>
-                  <small class="text-muted">2 completado</small>
+                  <h4 class="m-0"><a href="javascript:void(0)">{{ $CONVENIOS }} <small>Convenios</small></a></h4>
+                  <!--small class="text-muted">2 completado</small-->
               </div>
           </div>
       </div>

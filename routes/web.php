@@ -40,5 +40,3 @@ Route::group(['prefix' => 'views', 'middleware' => ['auth', 'AdminMiddle']], fun
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

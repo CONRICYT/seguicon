@@ -77,7 +77,7 @@
                         </div>
                         <div class="card card_task <?= isset($ONLY_VIEW) && $ONLY_VIEW ? 'card-collapsed' : '' ?>" data-task="{{ $value->task }}" data-agreement="{{ $value->agreement }}">
                             <div class="card-header">
-                                <h3 class="card-title"> {{ $idx }}.- {{ $value->task_name }}</h3>
+                                <h3 class="card-title"> {{ $idx }}.- <?= $value->task_name ?></h3>
                                 <div class="card-options">
                                     <div class=""><small>
                                         <div class="form-group">
@@ -101,7 +101,7 @@
                                 <div class="card m-0">
                                     <div class="d-flex align-items-center">
                                         <div>
-                                            <h4 class="m-0 ml-2"><a href="javascript:void(0)"><small>{{ $value->subtask_name }}</small></a> </h4>
+                                            <h4 class="m-0 ml-2"><a href="javascript:void(0)"><small><?= $value->subtask_name ?></small></a> </h4>
                                         </div>
                                         <label class="colorinput ml-auto m-1 mb-1">
                                           <input name="color" type="checkbox" value="{{ $value->subtask }}" data-agreement="{{ $value->agreement }}" class="colorinput-input <?= isset($ONLY_VIEW) && $ONLY_VIEW ? 'onlyView' : 'checkTask' ?>" data-url="{{ action('AgreementsController@check') }}" data-function-data="checkTaskData" data-function-success="checkTask" data-function-error="checkTaskError" <?= $tooltip ? 'checked="checked"' : '' ?>>
@@ -125,7 +125,7 @@
                             <div class="card m-0">
                                 <div class="d-flex align-items-center">
                                     <div>
-                                        <h4 class="m-0 ml-2"><a href="javascript:void(0)"><small>{{ $value->subtask_name }}</small></a></h4>
+                                        <h4 class="m-0 ml-2"><a href="javascript:void(0)"><small><?= $value->subtask_name ?></small></a></h4>
                                     </div>
                                     <label class="colorinput ml-auto m-1 mb-1">
                                       <input name="color" type="checkbox" value="{{ $value->subtask }}" data-agreement="{{ $value->agreement }}" class="colorinput-input  <?= isset($ONLY_VIEW) && $ONLY_VIEW ? 'onlyView' : 'checkTask' ?>" data-url="{{ action('AgreementsController@check') }}" data-function-data="checkTaskData" data-function-success="checkTask" data-function-error="checkTaskError" <?= $tooltip ? 'checked="checked"' : '' ?>>
