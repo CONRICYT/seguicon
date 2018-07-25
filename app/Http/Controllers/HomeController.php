@@ -46,7 +46,7 @@ class HomeController extends Controller
             $data = json_decode($val->data);
             $dates = json_decode($val->dates);
             foreach ($data as $subtask) {
-                if($subtask->subtask == 35 && $subtask->complete_date != ''){
+                if($subtask->subtask == 33 && $subtask->complete_date != ''){
                     $convenios_complete++;
                     $list_complete_conv[] = $val->agreement_name;
                 }
@@ -125,7 +125,7 @@ class HomeController extends Controller
             $dates = json_decode($val->dates);
 
             foreach ($data as $subtask) {
-                if($subtask->subtask == 35 && $subtask->complete_date != ''){
+                if($subtask->subtask == 33 && $subtask->complete_date != ''){
                     $contratos_complete++;
                     $list_complete_cont[] = $val->agreement_name;
                 }
