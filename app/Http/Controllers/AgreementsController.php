@@ -29,7 +29,7 @@ class AgreementsController extends Controller
             inner join tasks t on t.id = c_t.task
             left join subtasks s on s.task = t.id
             where a_t.id = :agreement_type
-            order by a.name, t.id ', ['agreement_type' => 1]);
+            order by a.name, t.id, s.id', ['agreement_type' => 1]);
 
         $data = ['title' => 'Convenios', 'ID_TYPE' => 1, 'TIPO' => 'Convenios Modificatorios', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
 
@@ -53,7 +53,7 @@ class AgreementsController extends Controller
             inner join tasks t on t.id = c_t.task
             left join subtasks s on s.task = t.id
             where a_t.id = :agreement_type
-            order by a.name, t.id', ['agreement_type' => 2]);
+            order by a.name, t.id, s.id', ['agreement_type' => 2]);
 
         $data = ['title' => 'Contratos',  'ID_TYPE' => 2, 'TIPO' => 'Contratos', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
 
