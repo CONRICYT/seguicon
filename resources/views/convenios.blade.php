@@ -13,6 +13,11 @@
             $current_task = '';
             $idx = 0;
             foreach ($INFO as $key => $value){
+                if(($value->agreement == 46 || $value->agreement == 55  || $value->agreement == 11 ||
+                $value->agreement == 12 || $value->agreement == 14 || $value->agreement == 16 || $value->agreement == 26)
+                && ($value->task == 4 || $value->task == 6)){
+                    continue;
+                }
                 $dates = $value->dates;
                 $dates = json_decode($dates);
 
@@ -101,6 +106,11 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                            <?php
+                                if($ID_TYPE ==1 && $value->subtask == 19) {
+                                    continue;
+                                }
+                             ?>
                             <?php if($value->subtask_name != '') { ?>
                                 <div class="card m-0">
                                     <div class="d-flex align-items-center">
@@ -126,6 +136,11 @@
                             <?php }
                     } else{
                     ?>
+                    <?php
+                        if($ID_TYPE ==1 && $value->subtask == 19) {
+                            continue;
+                        }
+                     ?>
                             <div class="card m-0">
                                 <div class="d-flex align-items-center">
                                     <div>

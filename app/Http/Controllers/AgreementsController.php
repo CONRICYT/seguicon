@@ -31,7 +31,7 @@ class AgreementsController extends Controller
             where a_t.id = :agreement_type
             order by a.name, t.id ', ['agreement_type' => 1]);
 
-        $data = ['title' => 'Convenios', 'TIPO' => 'Convenios Modificatorios', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
+        $data = ['title' => 'Convenios', 'ID_TYPE' => 1, 'TIPO' => 'Convenios Modificatorios', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
 
         return view('convenios', $data);
     }
@@ -55,7 +55,7 @@ class AgreementsController extends Controller
             where a_t.id = :agreement_type
             order by a.name, t.id', ['agreement_type' => 2]);
 
-        $data = ['title' => 'Contratos', 'TIPO' => 'Contratos', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
+        $data = ['title' => 'Contratos',  'ID_TYPE' => 2, 'TIPO' => 'Contratos', 'INFO' => $results, 'ONLY_VIEW' => $only_view, 'IS_ADMIN' => $is_admin];
 
         return view('convenios', $data);
     }
