@@ -21,8 +21,12 @@
                 $end_date = '';
                 foreach ($dates as $config_date) {
                     if($config_date->task == $value->task){
-                        $start_date = date('d-m-Y H:i', strtotime($config_date->start_date));
-                        $end_date = date('d-m-Y H:i', strtotime($config_date->end_date));
+                        if($config_date->start_date != ''){
+                            $start_date = date('d-m-Y H:i', strtotime($config_date->start_date));
+                        }
+                        if($config_date->end_date != '') {
+                            $end_date = date('d-m-Y H:i', strtotime($config_date->end_date));
+                        }
                     }
                 }
 
@@ -93,7 +97,7 @@
                                             </div>
                                         </div>
                                     </small></div>
-                                    <?= isset($ONLY_VIEW) && $ONLY_VIEW ? '' : '<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>' ?>
+                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
                                 </div>
                             </div>
                             <div class="card-body">

@@ -210,5 +210,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-    'CONST' => ['SUPER_ROLE' => 1, 'ADQUISICIONES_ROLE' => 2, 'REVISION_ROLE' => 3]
+    'CONST' => ['SUPER_ROLE' => 1, 'ADMIN_ROLE'=> 2, 'ADQUISICIONES_ROLE' => 3, 'REVISION_ROLE' => 4]
 ];
