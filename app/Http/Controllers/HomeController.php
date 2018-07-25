@@ -31,6 +31,15 @@ class HomeController extends Controller
             inner join agreements_types a_t on a_t.id = con.agreement_type
             where a_t.id = :agreement_type', ['agreement_type' => 1]);
 
+        $convenios_complete = 0;
+        foreach($convenios as $key => $val){
+            $data = json_decode($val->data);
+            foreach ($data as $subtask) {
+                if($subtask->subtask == 35 && $subtask->complete_date != ''){
+                    $convenios_complete++;
+                }
+            }
+        }
         $convenios = count($convenios);
 
 
@@ -40,8 +49,17 @@ class HomeController extends Controller
             inner join agreements_types a_t on a_t.id = con.agreement_type
             where a_t.id = :agreement_type', ['agreement_type' => 2]);
 
-        
+        $contratos_complete = 0;
+        foreach($contratos as $key => $val){
+            $data = json_decode($val->data);
+            foreach ($data as $subtask) {
+                if($subtask->subtask == 35 && $subtask->complete_date != ''){
+                    $contratos_complete++;
+                }
+            }
+        }
+
         $contratos = count($contratos);
-        return view('home', ['CONVENIOS' => $convenios, 'CONTRATOS' => $contratos]);
+        return view('home', ['CONVENIOS' => $convenios, 'CONTRATOS' => $contratos, 'CONTRATOS_COMPLETE' => $contratos_complete, 'CONVENIOS_COMPLETE' => $convenios_complete]);
     }
 }
