@@ -3,9 +3,62 @@
 @section('content')
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">Seguicon - Seguimineto de {{ $TIPO }}</h3>
+    <h3 class="card-title">Seguimineto de {{ $TIPO }}</h3>
   </div>
   <div class="card-body">
+      <div class="row justify-content-center bg-secondary">
+          <div class="col-lg-2 mt-5">
+            <h3 class="text-white">Código de colores</h3>
+          </div>
+          <div class="col-lg-2 mt-4">
+            <div class="card p-3">
+              <div class="d-flex align-items-center">
+                <span class="stamp stamp-md bg-blue mr-3">
+                  <i class="fe fe-rotate-cw"></i>
+                </span>
+                <div>
+                  <h4 class="m-0"><a href="#"><small>En proceso</small></a></h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2  mt-4">
+            <div class="card p-3">
+              <div class="d-flex align-items-center">
+                <span class="stamp stamp-md bg-yellow mr-3">
+                  <i class="fe fe-info"></i>
+                </span>
+                <div>
+                  <h4 class="m-0"><a href="#"><small>En límite de tiempo</small></a></h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2  mt-4">
+            <div class="card p-3">
+              <div class="d-flex align-items-center">
+                <span class="stamp stamp-md bg-green mr-3">
+                  <i class="fe fe-check-square"></i>
+                </span>
+                <div>
+                  <h4 class="m-0"><a href="#"><small>Completada</small></a></h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2  mt-4">
+            <div class="card p-3">
+              <div class="d-flex align-items-center">
+                <span class="stamp stamp-md bg-red mr-3">
+                  <i class="fe fe-x-square"></i>
+                </span>
+                <div>
+                  <h4 class="m-0"><a href="#"><small>Atrasada</small></a></h4>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
         @csrf
         <table class="table table-striped">
         <?php
@@ -15,7 +68,7 @@
             foreach ($INFO as $key => $value){
                 if(($value->agreement == 46 || $value->agreement == 55  || $value->agreement == 11 ||
                 $value->agreement == 12 || $value->agreement == 14 || $value->agreement == 16 || $value->agreement == 26)
-                && ($value->task == 4 || $value->task == 6)){
+                && ($value->task == 4 || $value->task == 6 || $value->task == 7)){
                     continue;
                 }
                 $dates = $value->dates;

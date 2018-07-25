@@ -134,11 +134,6 @@
             </div>
         </div>
         <div class="m-4">
-            <div class="page-header">
-                <h1 class="page-title">
-                    {{ isset($title) ? $title : '' }}
-                </h1>
-            </div>
             @yield('content')
         </div>
     </div>
