@@ -156,7 +156,7 @@
         <div class="container">
             <div class="row align-items-center flex-row-reverse">
                 <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
-                    {!! config('tabler.footer') !!}
+                    Sistema e Seguimiento de Contatos y Convenios. <b>CONRICYT</b>
                 </div>
             </div>
         </div>

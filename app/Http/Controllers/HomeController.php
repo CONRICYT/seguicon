@@ -32,83 +32,45 @@ class HomeController extends Controller
             inner join configs con on con.id = c.config
             inner join agreements_types a_t on a_t.id = con.agreement_type
             where a_t.id = :agreement_type', ['agreement_type' => 1]);*/
+        $all_tasks = DB::select('SELECT t.name as task_name, t.id as task, s.id as subtask, s.name as subtask_name from subtasks s inner join tasks t on t.id = s.task
+        order by t.id, s.id');
 
-            $convenios = DB::select('SELECT c.id as config_id, a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c.dates FROM `agreements` a
-                inner join agreements_config c on c.agreement = a.id
-                inner join configs con on con.id = c.config
-                inner join agreements_types a_t on a_t.id = con.agreement_type
-                where a_t.id = :agreement_type
-                order by a.name', ['agreement_type' => 1]);
+        $convenios = DB::select('SELECT c.id as config_id, a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c.dates FROM `agreements` a
+            inner join agreements_config c on c.agreement = a.id
+            inner join configs con on con.id = c.config
+            inner join agreements_types a_t on a_t.id = con.agreement_type
+            where a_t.id = :agreement_type
+            order by a.name', ['agreement_type' => 1]);
 
-        $convenios_complete = 0;
+
         $list_complete_conv = array();
+        $stepsConvenios = array();
         foreach($convenios as $key => $val){
             $data = json_decode($val->data);
-            $dates = json_decode($val->dates);
             foreach ($data as $subtask) {
-                if($subtask->subtask == 33 && $subtask->complete_date != ''){
-                    $convenios_complete++;
-                    $list_complete_conv[] = $val->agreement_name;
-                }
-            }
-            /////////////////////////////////////
-            /*
-            $last_end_date = '';
+                if($subtask->complete_date == ''){
+                    $entro = false;
+                    foreach ($all_tasks as $k => $v) {
 
-            foreach ($dates as $task) {
-                $numDays = 1;
-                if($task->task == 1) {
-                    $numDays = 1;
-                } else if($task->task == 2) {
-                    $numDays = 60; //Son 40 realmente
-                } else if($task->task == 3) {
-                    $numDays = 10;
-                } else if($task->task == 4) {
-                    $numDays = 4;
-                } else if($task->task == 5) {
-                    $numDays = 4;
-                } else if($task->task == 6) {
-                    $numDays = 3;
-                } else if($task->task == 7) {
-                    $numDays = 1;
-                } else if($task->task == 8) {
-                    $numDays = 10;
-                } else if($task->task == 9) {
-                    $numDays = 0;
-                } else if($task->task == 10) {
-                    $numDays = 2;
-                } else if($task->task == 11) {
-                    $numDays = 7;
-                } else if($task->task == 12) {
-                    $numDays = 1;
-                } else if($task->task == 13) {
-                    $numDays = 1;
-                }
+                        if(($val->agreement == 46 || $val->agreement == 55  || $val->agreement == 11 ||
+                        $val->agreement == 12 || $val->agreement == 14 || $val->agreement == 16 || $val->agreement == 26)
+                        && ($v->task == 4 || $v->task == 6 || $v->task == 7)){
+                            continue;
+                        }
 
-                if($task->start_date == '') {
-                    if($last_end_date == '') {
-                        $last_end_date = date('Y-m-d').' 00:00:00';
-                    } else if($last_end_date<(date('Y-m-d').' 00:00:00')){
-                        $last_end_date = date('Y-m-d').' 00:00:00';
-                    } else {
-                        $last_end_date = substr($last_end_date, 0, -8).'00:00:00';
+                        if($subtask->subtask == $v->subtask) {
+                            $stepsConvenios[$v->task][] = $val->agreement_name;
+                            $entro = true;
+                        }
                     }
-                    $task->start_date = $this->addDays($last_end_date, 1, true);
-                    //$last_end_date = $this->addDays($last_end_date, 1, true);
-                }
-                if($task->end_date == ''){
-                    $task->end_date = $this->addDays($task->start_date, $numDays);
-                    $last_end_date = $this->addDays($task->start_date, $numDays);
+                    if($entro){
+                        break;
+                    }
                 }
             }
-
-            $currentCon = Convenios::find($val->config_id);
-            $currentCon->dates = json_encode(array_values($dates));
-            $currentCon->save();
-            */
         }
-        $convenios = count($convenios);
 
+        $convenios = count($convenios);
 
         $contratos = DB::select('SELECT c.id as config_id, a.id as "agreement", a.name as "agreement_name", a_t.name as "type_agreement", c.year, c.data, c.dates FROM `agreements` a
             inner join agreements_config c on c.agreement = a.id
@@ -117,20 +79,31 @@ class HomeController extends Controller
             where a_t.id = :agreement_type
             order by a.name', ['agreement_type' => 2]);
 
-        $contratos_complete = 0;
         $list_complete_cont = array();
-
+        $stepsContratos = array();
         foreach($contratos as $key => $val){
             $data = json_decode($val->data);
-            $dates = json_decode($val->dates);
-
             foreach ($data as $subtask) {
-                if($subtask->subtask == 33 && $subtask->complete_date != ''){
-                    $contratos_complete++;
-                    $list_complete_cont[] = $val->agreement_name;
+                if($subtask->complete_date == ''){
+                    $entro = false;
+                    foreach ($all_tasks as $k => $v) {
+
+                        if(($val->agreement == 46 || $val->agreement == 55  || $val->agreement == 11 ||
+                        $val->agreement == 12 || $val->agreement == 14 || $val->agreement == 16 || $val->agreement == 26)
+                        && ($v->task == 4 || $v->task == 6 || $v->task == 7)){
+                            continue;
+                        }
+
+                        if($subtask->subtask == $v->subtask) {
+                            $stepsContratos[$v->task][] = $val->agreement_name;
+                            $entro = true;
+                        }
+                    }
+                    if($entro) {
+                        break;
+                    }
                 }
             }
-
             /////////////////////
             /*
             $last_end_date = '';
@@ -189,11 +162,11 @@ class HomeController extends Controller
             */
         }
 
+        ksort($stepsContratos);
+        ksort($stepsConvenios);
         $contratos = count($contratos);
         return view('home', ['CONVENIOS' => $convenios, 'CONTRATOS' => $contratos,
-        'CONTRATOS_COMPLETE' => $contratos_complete, 'CONVENIOS_COMPLETE' => $convenios_complete,
-        'LIST_COMPLETE_CONV' => $list_complete_conv, 'LIST_COMPLETE_CONT' => $list_complete_cont
-    ]);
+        'stepsConvenios' => $stepsConvenios, 'stepsContratos' => $stepsContratos, 'ALL_TASKS' => $all_tasks]);
     }
 
     function addDays($date, $numdays, $full = false){

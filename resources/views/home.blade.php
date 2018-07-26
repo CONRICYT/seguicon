@@ -20,93 +20,79 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
   <div class="card-body">
       <div class="row">
           <div class="col-lg-6">
-              <h3>Resumen</h3>
-              <div class="card p-3">
-                  <div class="d-flex align-items-center">
-                      <div class="card card-collapsed">
-                        <div class="card-header">
-                            <span class="stamp stamp-md bg-secondary mr-3">
-                                <i class="fa fa-file-text"></i>
-                            </span>
-                            <h4 class="m-0"><a href="/{{ $path }}/convenios">{{ $CONTRATOS }} <small>Contratos</small></a></h4>
-                            <div class="card-options">
-                                <small><a href="#" class="card-options-collapse" data-toggle="card-collapse">{{ $CONTRATOS_COMPLETE }} completado</a></small>
-                            </div>
+              <h2 class="m-0"><a href="/{{ $path }}/contratos">{{ $CONTRATOS }} Contratos</a></h2>
+              <div class="accordion" id="accordionCont">
+                  <?php foreach ($stepsContratos as $key => $value): ?>
+
+                      <div class="card mb-0">
+                        <div class="card-header" id="heading{{ $key }}">
+                          <h5 class="mb-0">
+                            <a href="#" data-toggle="collapse" data-target="#collapse{{ $key }}" aria-expanded="true" aria-controls="collapse{{ $key }}">
+                              <?php foreach ($ALL_TASKS as $k => $v):
+                                        if($v->task == $key){
+                                            echo $v->task_name;
+                                            break;
+                                        }
+                                    endforeach; ?>
+                            </a>
+                          </h5>
+                          <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
+                              <div class="chart-circle-value"><?= count($value) ?></div>
+                          </div>
                         </div>
-                        <div class="card-body">
+
+                        <div id="collapse{{ $key }}" class="collapse <?= $key ==0 ? 'active' : '' ?>" aria-labelledby="heading{{ $key }}" data-parent="#accordionCont">
+                          <div class="card-body">
                               <ul>
-                                <?php
-                                  foreach ($LIST_COMPLETE_CONT as $key => $value) {
+                                  <?php foreach ($value as $k => $v) {
                                       ?>
-                                      <li>{{ $value }}</li>
+                                      <li>{{ $v }}</li>
                                       <?php
                                   }
-                                ?>
+                                  ?>
                               </ul>
+                          </div>
                         </div>
                       </div>
-                  </div>
-                  <div class="d-flex align-items-center">
-                      <div class="card card-collapsed">
-                        <div class="card-header">
-                            <span class="stamp stamp-md bg-secondary mr-3">
-                                <i class="fa fa-file-text"></i>
-                            </span>
-                            <h4 class="m-0"><a href="/{{ $path }}/convenios">{{ $CONVENIOS }} <small>Convenios</small></a></h4>
-                            <div class="card-options">
-                                <small><a href="#" class="card-options-collapse" data-toggle="card-collapse">{{ $CONVENIOS_COMPLETE }} completado</a></small>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                              <ul>
-                                <?php
-                                  foreach ($LIST_COMPLETE_CONV as $key => $value) {
-                                      ?>
-                                      <li>{{ $value }}</li>
-                                      <?php
-                                  }
-                                ?>
-                              </ul>
-                        </div>
-                      </div>
-                  </div>
+                  <?php endforeach; ?>
               </div>
           </div>
-          <div class="col-lg-3 pull right">
-              <h3>Código de colores</h3>
-              <div class="card p-3">
-                  <div class="d-flex align-items-center mb-3">
-                      <span class="stamp stamp-md bg-blue mr-3">
-                          <i class="fe fe-rotate-cw"></i>
-                      </span>
-                      <div>
-                          <h4 class="m-0"><a href="#"><small>En proceso</small></a></h4>
+          <div class="col-lg-6">
+              <h2 class="m-0"><a href="/{{ $path }}/convenios">{{ $CONVENIOS }} Convenios</a></h2>
+              <div class="accordion" id="accordionConv">
+                  <?php foreach ($stepsConvenios as $key => $value): ?>
+
+                      <div class="card mb-0">
+                        <div class="card-header" id="heading{{ $key }}">
+                          <h5 class="mb-0">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_{{ $key }}" aria-expanded="true" aria-controls="collapse_{{ $key }}">
+                              <?php foreach ($ALL_TASKS as $k => $v):
+                                        if($v->task == $key){
+                                            echo $v->task_name;
+                                            break;
+                                        }
+                                    endforeach; ?>
+                            </a>
+                          </h5>
+                          <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
+                              <div class="chart-circle-value"><?= count($value) ?></div>
+                          </div>
+                        </div>
+
+                        <div id="collapse_{{ $key }}" class="collapse <?= $key ==0 ? 'active' : '' ?>" aria-labelledby="heading{{ $key }}" data-parent="#accordionConv">
+                          <div class="card-body">
+                              <ul>
+                                  <?php foreach ($value as $k => $v) {
+                                      ?>
+                                      <li>{{ $v }}</li>
+                                      <?php
+                                  }
+                                  ?>
+                              </ul>
+                          </div>
+                        </div>
                       </div>
-                  </div>
-                  <div class="d-flex align-items-center mb-3">
-                      <span class="stamp stamp-md bg-yellow mr-3">
-                          <i class="fe fe-info"></i>
-                      </span>
-                      <div>
-                          <h4 class="m-0"><a href="#"><small>En límite de tiempo</small></a></h4>
-                      </div>
-                  </div>
-                  <div class="d-flex align-items-center mb-3">
-                      <span class="stamp stamp-md bg-green mr-3">
-                          <i class="fe fe-check-square"></i>
-                      </span>
-                      <div>
-                          <h4 class="m-0"><a href="#"><small>Completada</small></a></h4>
-                      </div>
-                  </div>
-                  <div class="d-flex align-items-center mb-3">
-                      <span class="stamp stamp-md bg-red mr-3">
-                          <i class="fe fe-x-square"></i>
-                      </span>
-                      <div>
-                          <h4 class="m-0"><a href="#"><small>Atrasada</small></a></h4>
-                      </div>
-                  </div>
+                  <?php endforeach; ?>
               </div>
           </div>
       </div>
