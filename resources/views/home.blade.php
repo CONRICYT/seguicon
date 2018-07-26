@@ -20,8 +20,22 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
   <div class="card-body">
       <div class="row">
           <div class="col-lg-6">
-              <h2 class="m-0"><a href="/{{ $path }}/contratos">{{ $CONTRATOS }} Contratos</a></h2>
               <div class="accordion" id="accordionCont">
+                  <div class="card mb-0">
+                    <div class="card-header" id="headingX">
+                      <h3 class="mb-0">
+                          <h2 class="m-0"><a href="/{{ $path }}/contratos">{{ $CONTRATOS }} Contratos</a></h2>
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="card mb-0"  style="background-color: rgba(0, 0, 0, 0.04);">
+                    <div class="card-header" id="headingX">
+                      <h3 class="mb-0">
+                          <h2 class="m-0">Etapas del proceso</h2>
+                      </h3>
+                      <h3 class="card-options">No. de<br>instrumentos</h3>
+                    </div>
+                  </div>
                   <?php foreach ($stepsContratos as $key => $value): ?>
 
                       <div class="card mb-0">
@@ -37,7 +51,7 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                             </a>
                           </h5>
                           <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
-                              <div class="chart-circle-value"><?= count($value) ?></div>
+                              <div class="chart-circle-value text-dark"><?= count($value) ?></div>
                           </div>
                         </div>
 
@@ -58,8 +72,22 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
               </div>
           </div>
           <div class="col-lg-6">
-              <h2 class="m-0"><a href="/{{ $path }}/convenios">{{ $CONVENIOS }} Convenios</a></h2>
               <div class="accordion" id="accordionConv">
+                  <div class="card mb-0">
+                    <div class="card-header" id="headingX">
+                      <h3 class="mb-0">
+                          <h2 class="m-0"><a href="/{{ $path }}/convenios">{{ $CONVENIOS }} Convenios</a></h2>
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="card mb-0" style="background-color: rgba(0, 0, 0, 0.04);">
+                    <div class="card-header" id="headingX">
+                      <h3 class="mb-0">
+                          <h2 class="m-0">Etapas del proceso</h2>
+                      </h3>
+                      <h3 class="card-options">No. de<br>instrumentos</h3>
+                    </div>
+                  </div>
                   <?php foreach ($stepsConvenios as $key => $value): ?>
 
                       <div class="card mb-0">
@@ -75,7 +103,7 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                             </a>
                           </h5>
                           <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
-                              <div class="chart-circle-value"><?= count($value) ?></div>
+                              <div class="chart-circle-value text-dark"><?= count($value) ?></div>
                           </div>
                         </div>
 
