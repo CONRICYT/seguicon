@@ -7,7 +7,7 @@ use App\Agreements_config;
 use DB;
 use App\Convenios;
 use DateTime;
-
+use Hash;
 class HomeController extends Controller
 {
     /**
@@ -27,6 +27,21 @@ class HomeController extends Controller
      */
     public function index()
     {
+        /*$password = array(
+            'mguajardom',
+            'eramirez',
+            'larreola',
+            'sergiolr',
+            'azurita',
+            'mario.saavedra',
+            'jibarram',
+            'isaias.elizarraraz',
+            'montiveros'
+        );
+        foreach ($password as $key => $value) {
+            echo Hash::make($value).'<br><br>';
+        }*/
+
         /*$convenios = DB::select('SELECT * FROM `agreements` a
             inner join agreements_config c on c.agreement = a.id
             inner join configs con on con.id = c.config
@@ -45,9 +60,14 @@ class HomeController extends Controller
 
         $list_complete_conv = array();
         $stepsConvenios = array();
+        $formalizadosConvenios = array();
         foreach($convenios as $key => $val){
             $data = json_decode($val->data);
             foreach ($data as $subtask) {
+                if($subtask->subtask == 33 && $subtask->complete_date != ''){
+                   $formalizadosConvenios[] = $val->agreement_name;
+                }
+
                 if($subtask->complete_date == ''){
                     $entro = false;
                     foreach ($all_tasks as $k => $v) {
@@ -55,6 +75,10 @@ class HomeController extends Controller
                         if(($val->agreement == 46 || $val->agreement == 55  || $val->agreement == 11 ||
                         $val->agreement == 12 || $val->agreement == 14 || $val->agreement == 16 || $val->agreement == 26)
                         && ($v->task == 4 || $v->task == 6 || $v->task == 7)){
+                            continue;
+                        }
+
+                        if($v->task == 12 || $v->task == 13) {
                             continue;
                         }
 
@@ -81,9 +105,14 @@ class HomeController extends Controller
 
         $list_complete_cont = array();
         $stepsContratos = array();
+        $formalizadosContratos = array();
         foreach($contratos as $key => $val){
             $data = json_decode($val->data);
             foreach ($data as $subtask) {
+                if($subtask->subtask == 33 && $subtask->complete_date != ''){
+                   $formalizadosContratos[] = $val->agreement_name;
+                }
+
                 if($subtask->complete_date == ''){
                     $entro = false;
                     foreach ($all_tasks as $k => $v) {
@@ -91,6 +120,10 @@ class HomeController extends Controller
                         if(($val->agreement == 46 || $val->agreement == 55  || $val->agreement == 11 ||
                         $val->agreement == 12 || $val->agreement == 14 || $val->agreement == 16 || $val->agreement == 26)
                         && ($v->task == 4 || $v->task == 6 || $v->task == 7)){
+                            continue;
+                        }
+
+                        if($v->task == 12 || $v->task == 13) {
                             continue;
                         }
 
@@ -166,7 +199,7 @@ class HomeController extends Controller
         ksort($stepsConvenios);
         $contratos = count($contratos);
         return view('home', ['CONVENIOS' => $convenios, 'CONTRATOS' => $contratos,
-        'stepsConvenios' => $stepsConvenios, 'stepsContratos' => $stepsContratos, 'ALL_TASKS' => $all_tasks]);
+        'stepsConvenios' => $stepsConvenios, 'stepsContratos' => $stepsContratos, 'ALL_TASKS' => $all_tasks, 'CONVENIOS_F' => $formalizadosConvenios,  'CONTRATOS_F' => $formalizadosContratos]);
     }
 
     function addDays($date, $numdays, $full = false){

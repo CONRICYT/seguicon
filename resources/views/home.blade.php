@@ -12,6 +12,8 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
 } else if($USER->role == config('app.CONST.REVISION_ROLE')) {
     $path = 'views';
 }
+$subtotal = 0;
+$subtotal2 = 0;
 ?>
 <div class="card">
   <div class="card-header">
@@ -59,6 +61,7 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                           <div class="card-body">
                               <ul>
                                   <?php foreach ($value as $k => $v) {
+                                      $subtotal++;
                                       ?>
                                       <li>{{ $v }}</li>
                                       <?php
@@ -69,6 +72,39 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                         </div>
                       </div>
                   <?php endforeach; ?>
+                  <div class="card mb-0"  style="background-color: rgba(0, 0, 0, 0.04);">
+                    <div class="card-header" id="headingX">
+                      <h3 class="mb-0">
+                          <h2 class="m-0">Subtotal</h2>
+                      </h3>
+                      <h3 class="card-options"  style="padding-left: 55px; margin-bottom: 0px;"><?= $subtotal ?></h3>
+                    </div>
+                  </div>
+                  <div class="card mb-0">
+                    <div class="card-header" id="headingZ">
+                      <h5 class="mb-0">
+                        <a href="#" data-toggle="collapse" data-target="#collapse_Z" aria-expanded="true" aria-controls="collapse_Z">
+                         Formalizados
+                        </a>
+                      </h5>
+                      <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
+                          <div class="chart-circle-value text-dark"><?= count($CONTRATOS_F) ?></div>
+                      </div>
+                    </div>
+
+                    <div id="collapse_Z" class="collapse <?= $key ==0 ? 'active' : '' ?>" aria-labelledby="headingZ" data-parent="#accordionConv">
+                      <div class="card-body">
+                          <ul>
+                              <?php foreach ($CONTRATOS_F as $k => $v) {
+                                  ?>
+                                  <li>{{ $v }}</li>
+                                  <?php
+                              }
+                              ?>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
               </div>
           </div>
           <div class="col-lg-6">
@@ -89,7 +125,6 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                     </div>
                   </div>
                   <?php foreach ($stepsConvenios as $key => $value): ?>
-
                       <div class="card mb-0">
                         <div class="card-header" id="heading{{ $key }}">
                           <h5 class="mb-0">
@@ -111,6 +146,7 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                           <div class="card-body">
                               <ul>
                                   <?php foreach ($value as $k => $v) {
+                                      $subtotal2++;
                                       ?>
                                       <li>{{ $v }}</li>
                                       <?php
@@ -121,6 +157,39 @@ if ($USER->role == config('app.CONST.SUPER_ROLE')){
                         </div>
                       </div>
                   <?php endforeach; ?>
+                  <div class="card mb-0" style="background-color: rgba(0, 0, 0, 0.04);">
+                    <div class="card-header" id="headingX">
+                      <h3 class="mb-0">
+                          <h2 class="m-0">Subtotal</h2>
+                      </h3>
+                      <h3 class="card-options" style="padding-left: 55px; margin-bottom: 0px;"><?= $subtotal2 ?></h3>
+                    </div>
+                  </div>
+                  <div class="card mb-0">
+                    <div class="card-header" id="headingQ">
+                      <h5 class="mb-0">
+                        <a href="#" data-toggle="collapse" data-target="#collapse_Q" aria-expanded="true" aria-controls="collapse_Q">
+                         Formalizados
+                        </a>
+                      </h5>
+                      <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
+                          <div class="chart-circle-value text-dark"><?= count($CONVENIOS_F) ?></div>
+                      </div>
+                    </div>
+
+                    <div id="collapse_Q" class="collapse <?= $key ==0 ? 'active' : '' ?>" aria-labelledby="headingQ" data-parent="#accordionConv">
+                      <div class="card-body">
+                          <ul>
+                              <?php foreach ($CONVENIOS_F as $k => $v) {
+                                  ?>
+                                  <li>{{ $v }}</li>
+                                  <?php
+                              }
+                              ?>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
               </div>
           </div>
       </div>
