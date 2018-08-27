@@ -106,11 +106,17 @@ class HomeController extends Controller
         $list_complete_cont = array();
         $stepsContratos = array();
         $formalizadosContratos = array();
+        $canceladosContratos = array();
         foreach($contratos as $key => $val){
             $data = json_decode($val->data);
             foreach ($data as $subtask) {
                 if($subtask->subtask == 33 && $subtask->complete_date != ''){
                    $formalizadosContratos[] = $val->agreement_name;
+                }
+
+                if($subtask->subtask == 39 && $subtask->complete_date != ''){
+                   $canceladosContratos[] = $val->agreement_name;
+                   continue;
                 }
 
                 if($subtask->complete_date == ''){
@@ -198,7 +204,7 @@ class HomeController extends Controller
         ksort($stepsContratos);
         ksort($stepsConvenios);
         $contratos = count($contratos);
-        return view('home', ['CONVENIOS' => $convenios, 'CONTRATOS' => $contratos,
+        return view('home', ['CONVENIOS' => $convenios, 'CONTRATOS' => $contratos, 'CONTRATOS_C' => $canceladosContratos,
         'stepsConvenios' => $stepsConvenios, 'stepsContratos' => $stepsContratos, 'ALL_TASKS' => $all_tasks, 'CONVENIOS_F' => $formalizadosConvenios,  'CONTRATOS_F' => $formalizadosContratos]);
     }
 

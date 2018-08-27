@@ -91,11 +91,34 @@ $subtotal2 = 0;
                           <div class="chart-circle-value text-dark"><?= count($CONTRATOS_F) ?></div>
                       </div>
                     </div>
-
                     <div id="collapse_Z" class="collapse <?= $key ==0 ? 'active' : '' ?>" aria-labelledby="headingZ" data-parent="#accordionConv">
                       <div class="card-body">
                           <ul>
                               <?php foreach ($CONTRATOS_F as $k => $v) {
+                                  ?>
+                                  <li>{{ $v }}</li>
+                                  <?php
+                              }
+                              ?>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card mb-0">
+                    <div class="card-header" id="headingZZ">
+                      <h5 class="mb-0">
+                        <a href="#" data-toggle="collapse" data-target="#collapse_ZZ" aria-expanded="true" aria-controls="collapse_ZZ">
+                         Cancelados
+                        </a>
+                      </h5>
+                      <div class="card-options chart-circle chart-circle-xs" data-value="1" data-thickness="3" data-color="blue"><canvas width="40" height="40"></canvas>
+                          <div class="chart-circle-value text-dark"><?= count($CONTRATOS_C) ?></div>
+                      </div>
+                    </div>
+                    <div id="collapse_ZZ" class="collapse <?= $key ==0 ? 'active' : '' ?>" aria-labelledby="headingZZ" data-parent="#accordionConv">
+                      <div class="card-body">
+                          <ul>
+                              <?php foreach ($CONTRATOS_C as $k => $v) {
                                   ?>
                                   <li>{{ $v }}</li>
                                   <?php
